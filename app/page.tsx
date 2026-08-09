@@ -16,6 +16,7 @@ export default function WeddingInvitation() {
     setIsClient(true);
   }, []);
 
+  // Target Date: Wedding - August 30, 2026, 09:00:00 AM
   const weddingDate = new Date("2026-08-30T09:00:00").getTime();
 
   const handleTimeUpdate = () => {
@@ -196,7 +197,7 @@ export default function WeddingInvitation() {
 
             {/* Countdown Section */}
             <section className="py-16">
-              <h2 className="font-cinzel text-lg tracking-widest text-amber-200 mb-8">Counting Down to Forever</h2>
+              <h2 className="font-cinzel text-lg tracking-widest text-amber-200 mb-8">Countdown to Wedding</h2>
               {isClient && (
                 <Countdown 
                   date={weddingDate} 
