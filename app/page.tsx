@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Countdown from 'react-countdown';
-import { Clock, Heart, ChevronDown } from 'lucide-react';
+import { Clock, Heart, ChevronDown, MapPin } from 'lucide-react';
 
 export default function WeddingInvitation() {
   const [detailsVisible, setDetailsVisible] = useState(false);
@@ -14,7 +14,8 @@ export default function WeddingInvitation() {
     setIsClient(true);
   }, []);
 
-  const weddingDate = new Date("2026-12-10T17:00:00").getTime();
+  // Target Date: August 30, 2026, 09:00:00 AM
+  const weddingDate = new Date("2026-08-30T09:00:00").getTime();
 
   // Trigger content reveal smoothly at 6 seconds while video plays fully
   const handleTimeUpdate = () => {
@@ -53,10 +54,10 @@ export default function WeddingInvitation() {
           <source src="/bg-video.mp4" type="video/mp4" />
         </video>
         
-        {/* Dynamic Blur Overlay (20% Intensity) */}
+        {/* Dynamic Blur Overlay adjusted to 10% intensity */}
         <motion.div 
-          initial={{ backdropFilter: "blur(0px)", backgroundColor: "rgba(0,0,0,0.2)" }}
-          animate={detailsVisible ? { backdropFilter: "blur(4px)", backgroundColor: "rgba(0,0,0,0.4)" } : { backdropFilter: "blur(0px)", backgroundColor: "rgba(0,0,0,0.2)" }}
+          initial={{ backdropFilter: "blur(0px)", backgroundColor: "rgba(0,0,0,0.15)" }}
+          animate={detailsVisible ? { backdropFilter: "blur(2px)", backgroundColor: "rgba(0,0,0,0.3)" } : { backdropFilter: "blur(0px)", backgroundColor: "rgba(0,0,0,0.15)" }}
           transition={{ duration: 1.8, ease: "easeInOut" }}
           className="absolute inset-0"
         />
@@ -71,7 +72,7 @@ export default function WeddingInvitation() {
             transition={{ duration: 1.5, ease: "easeOut" }}
             className="relative z-10 max-w-md mx-auto pb-24 px-6 text-center"
           >
-            {/* Hero Section matching reference style */}
+            {/* Hero Section */}
             <section className="min-h-[92vh] flex flex-col items-center justify-center py-12">
               <div className="text-amber-300 mb-2">
                 <Heart size={20} className="fill-amber-300 mx-auto" />
@@ -86,10 +87,9 @@ export default function WeddingInvitation() {
               <h1 className="font-script text-7xl md:text-8xl text-amber-400 drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)] leading-none mb-3">
                 Anand
               </h1>
-              <div className="font-playfair text-sm md:text-base italic text-amber-100/90 space-y-0.5 mb-8">
-                <p>Son of Mr. &amp; Mrs. Shunmuga Sundaram</p>
-                <p>B.E., M.S.</p>
-                <p className="text-amber-300/90 not-italic font-sans text-xs tracking-wider uppercase">Business Owner</p>
+              <div className="font-playfair text-sm md:text-base italic text-amber-100/90 space-y-1 mb-8">
+                <p>B.E (Electronics &amp; Instrumentation Engineering)</p>
+                <p className="text-amber-300/90 not-italic font-sans text-xs tracking-wider uppercase font-semibold">Managing Partner at Mani Offset</p>
               </div>
 
               {/* Ampersand */}
@@ -101,11 +101,15 @@ export default function WeddingInvitation() {
               <h2 className="font-script text-7xl md:text-8xl text-amber-400 drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)] leading-none mb-3">
                 Swetha
               </h2>
-              <div className="font-playfair text-sm md:text-base italic text-amber-100/90 space-y-0.5 mb-10">
-                <p>Daughter of Mr. &amp; Mrs. Family Name</p>
-                <p>B.Tech, M.S.</p>
-                <p className="text-amber-300/90 not-italic font-sans text-xs tracking-wider uppercase">Software Professional</p>
+              <div className="font-playfair text-sm md:text-base italic text-amber-100/90 space-y-1 mb-10">
+                <p>B.Voc Sustainable Environment, MBA (HR)</p>
+                <p className="text-amber-300/90 not-italic font-sans text-xs tracking-wider uppercase font-semibold">Payroll Associate at NTT DATA</p>
               </div>
+
+              {/* Invitation Quote */}
+              <p className="max-w-xs mx-auto font-playfair text-sm italic text-amber-100/90 leading-relaxed mb-6">
+                Your presence would mean the world to us. We hope to celebrate this joyous occasion with you and your family.
+              </p>
 
               {/* Scroll Indicator */}
               <div className="mt-4 animate-bounce text-amber-300/80">
@@ -114,17 +118,8 @@ export default function WeddingInvitation() {
               </div>
             </section>
 
-            {/* Event Date Box */}
-            <section className="py-12">
-              <div className="p-6 bg-black/40 backdrop-blur-md rounded-2xl border border-amber-500/20 shadow-[0_0_30px_rgba(0,0,0,0.4)] text-amber-50">
-                <p className="font-cinzel text-xs uppercase tracking-[0.2em] text-amber-300 mb-1">Save the Date</p>
-                <h3 className="font-serif text-3xl md:text-4xl text-amber-400 mb-1">Dec 10, 2026</h3>
-                <p className="font-playfair text-xs tracking-widest text-amber-100/70 uppercase">Thursday • 5:00 PM</p>
-              </div>
-            </section>
-
             {/* Countdown Section */}
-            <section className="py-16">
+            <section className="py-12">
               <h2 className="font-cinzel text-lg tracking-widest text-amber-200 mb-8">Counting Down to Forever</h2>
               {isClient && (
                 <Countdown 
@@ -152,22 +147,41 @@ export default function WeddingInvitation() {
             <section className="py-16 px-6 bg-black/50 backdrop-blur-md rounded-3xl border border-amber-500/20 shadow-2xl my-8">
               <h2 className="font-cinzel text-2xl text-amber-400 mb-10 tracking-wider">Program Timeline</h2>
               <div className="space-y-8 text-left">
-                {[
-                  { time: "4:00 PM", title: "Guest Arrival", date: "Dec 10, 2026", location: "ITC Grand Chola, Chennai" },
-                  { time: "5:00 PM", title: "Wedding Ceremony", date: "Dec 10, 2026", location: "Main Hall" },
-                  { time: "7:30 PM", title: "Dinner Reception", date: "Dec 10, 2026", location: "Banquet Gardens" },
-                ].map((event, idx) => (
-                  <div key={idx} className="flex gap-4 items-start border-b border-white/10 pb-6 last:border-none last:pb-0">
-                    <div className="mt-1 bg-amber-500/20 p-2.5 rounded-full text-amber-400 border border-amber-500/30 flex-shrink-0">
-                      <Clock size={18} />
-                    </div>
-                    <div>
-                      <h3 className="font-serif text-xl text-white mb-0.5">{event.title}</h3>
-                      <p className="font-playfair text-xs text-amber-200/70">{event.date} • {event.time}</p>
-                      <p className="font-sans text-[11px] text-amber-400/90 mt-1 uppercase tracking-wider font-semibold">{event.location}</p>
-                    </div>
+                {/* Reception */}
+                <div className="flex gap-4 items-start border-b border-white/10 pb-6">
+                  <div className="mt-1 bg-amber-500/20 p-2.5 rounded-full text-amber-400 border border-amber-500/30 flex-shrink-0">
+                    <Clock size={18} />
                   </div>
-                ))}
+                  <div>
+                    <h3 className="font-serif text-xl text-white mb-0.5">Reception</h3>
+                    <p className="font-playfair text-xs text-amber-200/70">Aug 29, 2026 • 6:30 PM onwards</p>
+                    <p className="font-sans text-[11px] text-amber-300/90 mt-1 uppercase tracking-wider font-semibold">A N R Thirumana Maligai, Tondiarpet, Chennai</p>
+                  </div>
+                </div>
+
+                {/* Wedding */}
+                <div className="flex gap-4 items-start">
+                  <div className="mt-1 bg-amber-500/20 p-2.5 rounded-full text-amber-400 border border-amber-500/30 flex-shrink-0">
+                    <Clock size={18} />
+                  </div>
+                  <div>
+                    <h3 className="font-serif text-xl text-white mb-0.5">Wedding Ceremony</h3>
+                    <p className="font-playfair text-xs text-amber-200/70">Aug 30, 2026 • 9:00 AM – 10:30 AM</p>
+                    <p className="font-sans text-[11px] text-amber-300/90 mt-1 uppercase tracking-wider font-semibold">A N R Thirumana Maligai, Tondiarpet, Chennai</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Map Link Button */}
+              <div className="mt-8 pt-6 border-t border-white/10 text-center">
+                <a 
+                  href="https://share.google/TFoHsW0kcuBGplQDR" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 px-5 py-3 rounded-xl text-xs font-cinzel tracking-wider uppercase transition-all"
+                >
+                  <MapPin size={16} /> View Venue on Google Maps
+                </a>
               </div>
             </section>
 
