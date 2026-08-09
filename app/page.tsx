@@ -185,7 +185,7 @@ export default function WeddingInvitation() {
               </div>
 
               <a 
-                href="https://share.google/TFoHsW0kcuBGplQDR" 
+                href="https://maps.app.goo.gl/4mtnzAx4MewZfybf7" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-block bg-[#996D2D] hover:bg-[#B38337] text-white py-3.5 px-8 rounded font-sans text-sm font-semibold transition-all shadow-lg w-full md:w-auto"
