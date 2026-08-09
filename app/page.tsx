@@ -17,12 +17,9 @@ export default function WeddingInvitation() {
   // Target Date: December 10, 2026, 17:00:00
   const weddingDate = new Date("2026-12-10T17:00:00").getTime();
 
-  // Handle video timing: pause at 6 seconds and trigger the reveal
-  const handleTimeUpdate = () => {
-    if (videoRef.current && videoRef.current.currentTime >= 6) {
-      videoRef.current.pause();
-      setDetailsVisible(true);
-    }
+  // Trigger content reveal when the video reaches its natural end
+  const handleVideoEnded = () => {
+    setDetailsVisible(true);
   };
 
   return (
@@ -34,22 +31,22 @@ export default function WeddingInvitation() {
           autoPlay
           muted
           playsInline
-          onTimeUpdate={handleTimeUpdate}
+          onEnded={handleVideoEnded}
           className="w-full h-full object-cover"
         >
           <source src="/bg-video.mp4" type="video/mp4" />
         </video>
         
-        {/* Dynamic Blur Overlay that fades in right at 6 seconds */}
+        {/* Dynamic Blur Overlay adjusted to 60% intensity (backdrop-blur-xl / blur-2xl equivalent) */}
         <motion.div 
           initial={{ backdropFilter: "blur(0px)", backgroundColor: "rgba(0,0,0,0.3)" }}
-          animate={detailsVisible ? { backdropFilter: "blur(8px)", backgroundColor: "rgba(0,0,0,0.6)" } : { backdropFilter: "blur(0px)", backgroundColor: "rgba(0,0,0,0.3)" }}
+          animate={detailsVisible ? { backdropFilter: "blur(24px)", backgroundColor: "rgba(0,0,0,0.6)" } : { backdropFilter: "blur(0px)", backgroundColor: "rgba(0,0,0,0.3)" }}
           transition={{ duration: 1.5, ease: "easeInOut" }}
           className="absolute inset-0"
         />
       </div>
 
-      {/* Main Content (Reveals after 6 seconds) */}
+      {/* Main Content (Reveals after video finishes playing fully) */}
       <AnimatePresence>
         {detailsVisible && (
           <motion.main 
