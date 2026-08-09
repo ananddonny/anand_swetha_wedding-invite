@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Countdown from 'react-countdown';
-import { Clock, Heart } from 'lucide-react';
+import { Clock, Heart, ChevronDown } from 'lucide-react';
 
 export default function WeddingInvitation() {
   const [detailsVisible, setDetailsVisible] = useState(false);
@@ -14,10 +14,9 @@ export default function WeddingInvitation() {
     setIsClient(true);
   }, []);
 
-  // Target Date: December 10, 2026, 17:00:00
   const weddingDate = new Date("2026-12-10T17:00:00").getTime();
 
-  // Trigger content reveal at exactly 6 seconds, while letting the video continue to play fully
+  // Trigger content reveal smoothly at 6 seconds while video plays fully
   const handleTimeUpdate = () => {
     if (videoRef.current && videoRef.current.currentTime >= 6 && !detailsVisible) {
       setDetailsVisible(true);
@@ -25,7 +24,22 @@ export default function WeddingInvitation() {
   };
 
   return (
-    <div className="relative min-h-screen text-amber-50 selection:bg-amber-500/30 overflow-x-hidden">
+    <div className="relative min-h-screen text-[#F3EFEA] selection:bg-amber-500/30 overflow-x-hidden font-serif">
+      {/* Import Google Fonts for Royal Script & Classic Serifs */}
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cinzel:wght@400;600&display=swap');
+        
+        .font-script {
+          font-family: 'Great Vibes', cursive;
+        }
+        .font-cinzel {
+          font-family: 'Cinzel', serif;
+        }
+        .font-playfair {
+          font-family: 'Playfair Display', serif;
+        }
+      `}</style>
+
       {/* Background Video Section */}
       <div className="fixed inset-0 z-0">
         <video
@@ -39,66 +53,93 @@ export default function WeddingInvitation() {
           <source src="/bg-video.mp4" type="video/mp4" />
         </video>
         
-        {/* Dynamic Blur Overlay adjusted to 25% intensity (backdrop-blur-sm equivalent) */}
+        {/* Dynamic Blur Overlay (20% Intensity) */}
         <motion.div 
           initial={{ backdropFilter: "blur(0px)", backgroundColor: "rgba(0,0,0,0.2)" }}
-          animate={detailsVisible ? { backdropFilter: "blur(6px)", backgroundColor: "rgba(0,0,0,0.45)" } : { backdropFilter: "blur(0px)", backgroundColor: "rgba(0,0,0,0.2)" }}
-          transition={{ duration: 1.5, ease: "easeInOut" }}
+          animate={detailsVisible ? { backdropFilter: "blur(4px)", backgroundColor: "rgba(0,0,0,0.4)" } : { backdropFilter: "blur(0px)", backgroundColor: "rgba(0,0,0,0.2)" }}
+          transition={{ duration: 1.8, ease: "easeInOut" }}
           className="absolute inset-0"
         />
       </div>
 
-      {/* Main Content (Reveals after 6 seconds while video finishes playing) */}
+      {/* Main Content with smooth mobile-first layout */}
       <AnimatePresence>
         {detailsVisible && (
           <motion.main 
-            initial={{ opacity: 0, y: 30 }} 
+            initial={{ opacity: 0, y: 15 }} 
             animate={{ opacity: 1, y: 0 }} 
-            transition={{ duration: 1.2, ease: "easeOut" }}
-            className="relative z-10 max-w-3xl mx-auto pb-24 px-4"
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            className="relative z-10 max-w-md mx-auto pb-24 px-6 text-center"
           >
-            {/* Hero Section */}
-            <section className="min-h-[90vh] flex flex-col items-center justify-center text-center py-20">
-              <p className="text-sm uppercase tracking-widest text-amber-200/70 mb-6 drop-shadow-md">We're getting married</p>
-              <h1 className="font-serif text-6xl md:text-8xl text-white mb-6 drop-shadow-2xl">
-                Anand <br/>
-                <span className="text-amber-500 text-5xl italic font-light">&</span><br/> 
-                Swetha
-              </h1>
-              <p className="font-serif text-xl italic text-amber-100/90 mb-12 drop-shadow-md">Request the honour of your presence</p>
-              <p className="max-w-md text-slate-200 leading-relaxed drop-shadow-md">
-                With hearts full of love and joy, we warmly invite you to share in the celebration of our union. Your presence would mean the world to us as we begin this beautiful journey together.
+            {/* Hero Section matching reference style */}
+            <section className="min-h-[92vh] flex flex-col items-center justify-center py-12">
+              <div className="text-amber-300 mb-2">
+                <Heart size={20} className="fill-amber-300 mx-auto" />
+              </div>
+              <p className="font-cinzel text-xs tracking-[0.3em] uppercase text-amber-200/90 mb-6">
+                We're Getting Married
               </p>
+
+              <div className="w-16 h-[1px] bg-amber-400/50 mb-6 mx-auto"></div>
+
+              {/* Groom Details */}
+              <h1 className="font-script text-7xl md:text-8xl text-amber-400 drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)] leading-none mb-3">
+                Anand
+              </h1>
+              <div className="font-playfair text-sm md:text-base italic text-amber-100/90 space-y-0.5 mb-8">
+                <p>Son of Mr. &amp; Mrs. Shunmuga Sundaram</p>
+                <p>B.E., M.S.</p>
+                <p className="text-amber-300/90 not-italic font-sans text-xs tracking-wider uppercase">Business Owner</p>
+              </div>
+
+              {/* Ampersand */}
+              <div className="font-script text-4xl text-amber-300/80 my-2">
+                &amp;
+              </div>
+
+              {/* Bride Details */}
+              <h2 className="font-script text-7xl md:text-8xl text-amber-400 drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)] leading-none mb-3">
+                Swetha
+              </h2>
+              <div className="font-playfair text-sm md:text-base italic text-amber-100/90 space-y-0.5 mb-10">
+                <p>Daughter of Mr. &amp; Mrs. Family Name</p>
+                <p>B.Tech, M.S.</p>
+                <p className="text-amber-300/90 not-italic font-sans text-xs tracking-wider uppercase">Software Professional</p>
+              </div>
+
+              {/* Scroll Indicator */}
+              <div className="mt-4 animate-bounce text-amber-300/80">
+                <p className="font-cinzel text-[10px] tracking-[0.25em] uppercase mb-1">Scroll</p>
+                <ChevronDown size={16} className="mx-auto" />
+              </div>
             </section>
 
-            {/* Event Date / Reveal Box */}
-            <section className="py-20">
-              <div className="text-center max-w-sm mx-auto">
-                <div className="relative p-8 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-[0_0_30px_rgba(0,0,0,0.3)] text-white">
-                  <p className="font-serif text-xl text-amber-400 mb-2">Save the Date</p>
-                  <h3 className="font-serif text-4xl mb-1 drop-shadow-lg">Dec 10, 2026</h3>
-                  <p className="text-amber-100/70 uppercase tracking-widest text-xs mt-2">Thursday • 5:00 PM</p>
-                </div>
+            {/* Event Date Box */}
+            <section className="py-12">
+              <div className="p-6 bg-black/40 backdrop-blur-md rounded-2xl border border-amber-500/20 shadow-[0_0_30px_rgba(0,0,0,0.4)] text-amber-50">
+                <p className="font-cinzel text-xs uppercase tracking-[0.2em] text-amber-300 mb-1">Save the Date</p>
+                <h3 className="font-serif text-3xl md:text-4xl text-amber-400 mb-1">Dec 10, 2026</h3>
+                <p className="font-playfair text-xs tracking-widest text-amber-100/70 uppercase">Thursday • 5:00 PM</p>
               </div>
             </section>
 
             {/* Countdown Section */}
-            <section className="py-24 text-center">
-              <h2 className="font-serif text-3xl mb-12 text-white drop-shadow-md">Counting Down to Forever</h2>
+            <section className="py-16">
+              <h2 className="font-cinzel text-lg tracking-widest text-amber-200 mb-8">Counting Down to Forever</h2>
               {isClient && (
                 <Countdown 
                   date={weddingDate} 
                   renderer={({ days, hours, minutes, seconds }) => (
-                    <div className="flex justify-center gap-4 md:gap-8 font-serif">
+                    <div className="grid grid-cols-4 gap-2 font-serif">
                       {[
                         { label: 'Days', value: days },
                         { label: 'Hours', value: hours },
-                        { label: 'Minutes', value: minutes },
-                        { label: 'Seconds', value: seconds }
+                        { label: 'Mins', value: minutes },
+                        { label: 'Secs', value: seconds }
                       ].map((time) => (
-                        <div key={time.label} className="flex flex-col items-center bg-black/30 backdrop-blur-sm p-4 rounded-xl border border-white/10 min-w-[80px]">
-                          <span className="text-4xl md:text-5xl text-amber-400 mb-2 drop-shadow-md">{String(time.value).padStart(2, '0')}</span>
-                          <span className="text-[10px] uppercase tracking-[0.2em] text-slate-300">{time.label}</span>
+                        <div key={time.label} className="flex flex-col items-center bg-black/40 backdrop-blur-md p-3 rounded-xl border border-amber-500/20">
+                          <span className="text-2xl md:text-3xl text-amber-400 font-bold mb-1">{String(time.value).padStart(2, '0')}</span>
+                          <span className="text-[9px] uppercase tracking-[0.2em] text-amber-200/60 font-sans">{time.label}</span>
                         </div>
                       ))}
                     </div>
@@ -108,22 +149,22 @@ export default function WeddingInvitation() {
             </section>
 
             {/* Program Timeline */}
-            <section className="py-20 px-8 bg-black/40 backdrop-blur-md rounded-3xl border border-white/10 shadow-2xl my-12">
-              <h2 className="font-serif text-4xl text-center mb-16 text-amber-400 drop-shadow-md">Program Timeline</h2>
-              <div className="max-w-md mx-auto space-y-12">
+            <section className="py-16 px-6 bg-black/50 backdrop-blur-md rounded-3xl border border-amber-500/20 shadow-2xl my-8">
+              <h2 className="font-cinzel text-2xl text-amber-400 mb-10 tracking-wider">Program Timeline</h2>
+              <div className="space-y-8 text-left">
                 {[
                   { time: "4:00 PM", title: "Guest Arrival", date: "Dec 10, 2026", location: "ITC Grand Chola, Chennai" },
                   { time: "5:00 PM", title: "Wedding Ceremony", date: "Dec 10, 2026", location: "Main Hall" },
                   { time: "7:30 PM", title: "Dinner Reception", date: "Dec 10, 2026", location: "Banquet Gardens" },
                 ].map((event, idx) => (
-                  <div key={idx} className="flex gap-6 items-start">
-                    <div className="mt-1 bg-amber-500/20 p-3 rounded-full text-amber-400 border border-amber-500/30">
-                      <Clock size={20} />
+                  <div key={idx} className="flex gap-4 items-start border-b border-white/10 pb-6 last:border-none last:pb-0">
+                    <div className="mt-1 bg-amber-500/20 p-2.5 rounded-full text-amber-400 border border-amber-500/30 flex-shrink-0">
+                      <Clock size={18} />
                     </div>
                     <div>
-                      <h3 className="font-serif text-2xl mb-1 text-white">{event.title}</h3>
-                      <p className="text-slate-300 text-sm">{event.date} • {event.time}</p>
-                      <p className="text-amber-400/80 text-xs mt-2 uppercase tracking-wider font-semibold">{event.location}</p>
+                      <h3 className="font-serif text-xl text-white mb-0.5">{event.title}</h3>
+                      <p className="font-playfair text-xs text-amber-200/70">{event.date} • {event.time}</p>
+                      <p className="font-sans text-[11px] text-amber-400/90 mt-1 uppercase tracking-wider font-semibold">{event.location}</p>
                     </div>
                   </div>
                 ))}
@@ -131,19 +172,19 @@ export default function WeddingInvitation() {
             </section>
 
             {/* RSVP Section */}
-            <section className="py-24 text-center max-w-lg mx-auto">
-              <Heart className="mx-auto text-amber-500 mb-6 drop-shadow-[0_0_10px_rgba(245,158,11,0.5)]" size={32} />
-              <h2 className="font-serif text-4xl mb-8 text-white">RSVP</h2>
+            <section className="py-16">
+              <Heart className="mx-auto text-amber-400 mb-4 drop-shadow-[0_0_10px_rgba(245,158,11,0.5)]" size={28} />
+              <h2 className="font-cinzel text-2xl text-white mb-6 tracking-wider">RSVP</h2>
               <form className="space-y-4 text-left" onSubmit={(e) => e.preventDefault()}>
-                <input type="text" placeholder="Your Name*" className="w-full p-4 border border-white/20 rounded-xl bg-black/40 backdrop-blur-md text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all" required />
-                <input type="email" placeholder="Email*" className="w-full p-4 border border-white/20 rounded-xl bg-black/40 backdrop-blur-md text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all" required />
-                <select className="w-full p-4 border border-white/20 rounded-xl bg-black/40 backdrop-blur-md text-white focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all appearance-none" required>
+                <input type="text" placeholder="Your Name*" className="w-full p-3.5 text-sm border border-amber-500/30 rounded-xl bg-black/50 backdrop-blur-md text-white placeholder-amber-200/40 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all font-sans" required />
+                <input type="email" placeholder="Email*" className="w-full p-3.5 text-sm border border-amber-500/30 rounded-xl bg-black/50 backdrop-blur-md text-white placeholder-amber-200/40 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all font-sans" required />
+                <select className="w-full p-3.5 text-sm border border-amber-500/30 rounded-xl bg-black/50 backdrop-blur-md text-white focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all appearance-none font-sans" required>
                   <option value="" className="text-slate-900">Will you be attending?*</option>
                   <option value="yes" className="text-slate-900">Yes, I'll be there!</option>
                   <option value="no" className="text-slate-900">Sorry, I can't make it</option>
                 </select>
-                <textarea placeholder="Your Message" className="w-full p-4 border border-white/20 rounded-xl bg-black/40 backdrop-blur-md text-white placeholder-slate-400 h-32 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all"></textarea>
-                <button type="submit" className="w-full bg-amber-600/90 hover:bg-amber-500 text-white py-4 rounded-xl uppercase tracking-widest text-sm font-semibold transition-all shadow-[0_0_20px_rgba(217,119,6,0.4)]">
+                <textarea placeholder="Your Message" className="w-full p-3.5 text-sm border border-amber-500/30 rounded-xl bg-black/50 backdrop-blur-md text-white placeholder-amber-200/40 h-28 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all font-sans"></textarea>
+                <button type="submit" className="w-full bg-amber-600 hover:bg-amber-500 text-white py-4 rounded-xl font-cinzel tracking-[0.2em] uppercase text-xs font-semibold transition-all shadow-[0_0_20px_rgba(217,119,6,0.4)]">
                   Send Message
                 </button>
               </form>
