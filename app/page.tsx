@@ -3,30 +3,57 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Countdown from 'react-countdown';
-import { Heart, ChevronDown, MapPin } from 'lucide-react';
+import { Heart, ChevronDown, MapPin, CheckCircle2 } from 'lucide-react';
 
 export default function WeddingInvitation() {
   const [detailsVisible, setDetailsVisible] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  // Target Date: August 30, 2026, 09:00:00 AM
   const weddingDate = new Date("2026-08-30T09:00:00").getTime();
 
-  // Trigger content reveal smoothly at 6 seconds while video plays fully
   const handleTimeUpdate = () => {
     if (videoRef.current && videoRef.current.currentTime >= 6 && !detailsVisible) {
       setDetailsVisible(true);
     }
   };
 
+  // Handle AJAX Form Submission to stay on page
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    const form = e.currentTarget;
+    const data = new FormData(form);
+
+    try {
+      const response = await fetch("https://formspree.io/f/xyegegll", {
+        method: "POST",
+        body: data,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        setFormSubmitted(true);
+      } else {
+        alert("Oops! There was a problem submitting your RSVP. Please try again.");
+      }
+    } catch (error) {
+      alert("Oops! There was a problem submitting your RSVP. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="relative min-h-[100dvh] text-[#F3EFEA] selection:bg-amber-500/30 overflow-x-hidden font-serif">
-      {/* Import Google Fonts for Royal Script & Classic Serifs */}
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cinzel:wght@400;600&display=swap');
         
@@ -41,7 +68,7 @@ export default function WeddingInvitation() {
         }
       `}</style>
 
-      {/* Background Video Section - Optimized for Mobile (100dvh) */}
+      {/* Background Video Section */}
       <div className="fixed inset-0 z-0 h-[100dvh] w-full">
         <video
           ref={videoRef}
@@ -54,7 +81,6 @@ export default function WeddingInvitation() {
           <source src="/bg-video.mp4" type="video/mp4" />
         </video>
         
-        {/* Dynamic Blur Overlay adjusted to 15% intensity */}
         <motion.div 
           initial={{ backdropFilter: "blur(0px)", backgroundColor: "rgba(0,0,0,0.15)" }}
           animate={detailsVisible ? { backdropFilter: "blur(3px)", backgroundColor: "rgba(0,0,0,0.35)" } : { backdropFilter: "blur(0px)", backgroundColor: "rgba(0,0,0,0.15)" }}
@@ -83,7 +109,6 @@ export default function WeddingInvitation() {
 
               <div className="w-16 h-[1px] bg-amber-400/50 mb-6 mx-auto"></div>
 
-              {/* Groom Details */}
               <h1 className="font-script text-7xl md:text-8xl text-amber-400 drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)] leading-none mb-3">
                 Anand
               </h1>
@@ -92,12 +117,10 @@ export default function WeddingInvitation() {
                 <p className="text-amber-300/90 not-italic font-sans text-xs tracking-wider uppercase font-semibold">Managing Partner at Mani Offset</p>
               </div>
 
-              {/* Ampersand */}
               <div className="font-script text-4xl text-amber-300/80 my-2">
                 &amp;
               </div>
 
-              {/* Bride Details */}
               <h2 className="font-script text-7xl md:text-8xl text-amber-400 drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)] leading-none mb-3">
                 Swetha
               </h2>
@@ -106,13 +129,11 @@ export default function WeddingInvitation() {
                 <p className="text-amber-300/90 not-italic font-sans text-xs tracking-wider uppercase font-semibold">Payroll Associate at NTT DATA</p>
               </div>
 
-              {/* Scroll Indicator */}
               <div className="mt-2 mb-10 animate-bounce text-amber-300/80">
                 <p className="font-cinzel text-[10px] tracking-[0.25em] uppercase mb-1">Scroll</p>
                 <ChevronDown size={16} className="mx-auto" />
               </div>
 
-              {/* Invitation Quote */}
               <p className="max-w-sm mx-auto font-playfair text-lg md:text-xl italic text-white leading-relaxed mt-4 drop-shadow-md">
                 "Your presence would mean the world to us. We hope to celebrate this joyous occasion with you and your family."
               </p>
@@ -121,14 +142,12 @@ export default function WeddingInvitation() {
             {/* Save the Date Section */}
             <section className="py-12">
               <div className="flex flex-col gap-6 w-full max-w-sm mx-auto">
-                {/* Reception Card */}
                 <div className="p-8 bg-[#1A1108]/80 backdrop-blur-md rounded-2xl border border-amber-600/30 shadow-[0_4px_20px_rgba(0,0,0,0.6)]">
                   <p className="font-cinzel text-sm md:text-base uppercase tracking-[0.25em] text-amber-400 mb-3 font-semibold">Reception</p>
                   <h3 className="font-serif text-4xl text-amber-400 mb-4 drop-shadow-md">Aug 29, 2026</h3>
                   <p className="font-cinzel text-sm md:text-base tracking-[0.15em] text-[#A88755] uppercase">Saturday • 6:30 PM Onwards</p>
                 </div>
 
-                {/* Wedding Card */}
                 <div className="p-8 bg-[#1A1108]/80 backdrop-blur-md rounded-2xl border border-amber-600/30 shadow-[0_4px_20px_rgba(0,0,0,0.6)]">
                   <p className="font-cinzel text-sm md:text-base uppercase tracking-[0.25em] text-amber-400 mb-3 font-semibold">Wedding</p>
                   <h3 className="font-serif text-4xl text-amber-400 mb-4 drop-shadow-md">Aug 30, 2026</h3>
@@ -143,7 +162,6 @@ export default function WeddingInvitation() {
                 <MapPin className="mx-auto text-amber-400 mb-3" size={28} strokeWidth={1.5} />
                 <h2 className="font-cinzel text-3xl text-amber-400 tracking-[0.15em] mb-4">Venue</h2>
                 
-                {/* Heart Separator */}
                 <div className="flex items-center justify-center gap-4 mb-6">
                   <div className="h-[1px] w-12 bg-amber-500/30"></div>
                   <Heart size={14} className="fill-[#A88755] text-[#A88755]" />
@@ -151,11 +169,9 @@ export default function WeddingInvitation() {
                 </div>
 
                 <h3 className="font-serif text-2xl text-white mb-1 drop-shadow-md">A N R Thirumana Maligai</h3>
-                {/* Updated Location Font Color to amber-400 */}
                 <p className="font-playfair text-amber-400 text-base md:text-lg">Tondiarpet, Chennai</p>
               </div>
 
-              {/* Embedded Google Map */}
               <div className="rounded-2xl overflow-hidden border border-amber-500/20 shadow-[0_0_20px_rgba(0,0,0,0.5)] mb-8 bg-white/5 p-1">
                 <div className="rounded-xl overflow-hidden relative pt-[60%]">
                   <iframe
@@ -168,7 +184,6 @@ export default function WeddingInvitation() {
                 </div>
               </div>
 
-              {/* View on Google Maps Button */}
               <a 
                 href="https://share.google/TFoHsW0kcuBGplQDR" 
                 target="_blank" 
@@ -208,19 +223,38 @@ export default function WeddingInvitation() {
             <section className="py-12">
               <Heart className="mx-auto text-amber-400 mb-4 drop-shadow-[0_0_10px_rgba(245,158,11,0.5)]" size={32} />
               <h2 className="font-cinzel text-2xl text-white mb-6 tracking-wider">RSVP</h2>
-              <form className="space-y-4 text-left" onSubmit={(e) => e.preventDefault()}>
-                <input type="text" placeholder="Your Name*" className="w-full p-3.5 text-sm border border-amber-500/30 rounded-xl bg-black/50 backdrop-blur-md text-white placeholder-amber-200/40 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all font-sans" required />
-                <input type="email" placeholder="Email*" className="w-full p-3.5 text-sm border border-amber-500/30 rounded-xl bg-black/50 backdrop-blur-md text-white placeholder-amber-200/40 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all font-sans" required />
-                <select className="w-full p-3.5 text-sm border border-amber-500/30 rounded-xl bg-black/50 backdrop-blur-md text-white focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all appearance-none font-sans" required>
-                  <option value="" className="text-slate-900">Will you be attending?*</option>
-                  <option value="yes" className="text-slate-900">Yes, I'll be there!</option>
-                  <option value="no" className="text-slate-900">Sorry, I can't make it</option>
-                </select>
-                <textarea placeholder="Your Message" className="w-full p-3.5 text-sm border border-amber-500/30 rounded-xl bg-black/50 backdrop-blur-md text-white placeholder-amber-200/40 h-28 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all font-sans"></textarea>
-                <button type="submit" className="w-full bg-[#996D2D] hover:bg-[#B38337] text-white py-4 rounded-xl font-cinzel tracking-[0.2em] uppercase text-xs font-semibold transition-all shadow-[0_0_20px_rgba(217,119,6,0.4)]">
-                  Send Message
-                </button>
-              </form>
+              
+              {!formSubmitted ? (
+                <form onSubmit={handleSubmit} className="space-y-4 text-left">
+                  <input type="text" name="name" placeholder="Your Name*" className="w-full p-3.5 text-sm border border-amber-500/30 rounded-xl bg-black/50 backdrop-blur-md text-white placeholder-amber-200/40 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all font-sans" required />
+                  <input type="email" name="email" placeholder="Email*" className="w-full p-3.5 text-sm border border-amber-500/30 rounded-xl bg-black/50 backdrop-blur-md text-white placeholder-amber-200/40 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all font-sans" required />
+                  <select name="attendance" className="w-full p-3.5 text-sm border border-amber-500/30 rounded-xl bg-black/50 backdrop-blur-md text-white focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all appearance-none font-sans" required>
+                    <option value="" className="text-slate-900">Will you be attending?*</option>
+                    <option value="Yes" className="text-slate-900">Yes, I'll be there!</option>
+                    <option value="No" className="text-slate-900">Sorry, I can't make it</option>
+                  </select>
+                  <textarea name="message" placeholder="Your Message" className="w-full p-3.5 text-sm border border-amber-500/30 rounded-xl bg-black/50 backdrop-blur-md text-white placeholder-amber-200/40 h-28 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all font-sans"></textarea>
+                  <button 
+                    type="submit" 
+                    disabled={isSubmitting}
+                    className="w-full bg-[#996D2D] hover:bg-[#B38337] text-white py-4 rounded-xl font-cinzel tracking-[0.2em] uppercase text-xs font-semibold transition-all shadow-[0_0_20px_rgba(217,119,6,0.4)] disabled:opacity-50"
+                  >
+                    {isSubmitting ? "Sending..." : "Send Message"}
+                  </button>
+                </form>
+              ) : (
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="p-8 bg-[#1A1108]/90 backdrop-blur-md rounded-2xl border border-amber-600/40 shadow-2xl text-center"
+                >
+                  <CheckCircle2 className="mx-auto text-amber-400 mb-4" size={48} />
+                  <h3 className="font-serif text-3xl text-amber-400 mb-2">Thank You!</h3>
+                  <p className="font-playfair text-amber-100/90 text-sm">
+                    Your RSVP has been submitted successfully. We look forward to celebrating with you!
+                  </p>
+                </motion.div>
+              )}
             </section>
           </motion.main>
         )}
