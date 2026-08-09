@@ -17,9 +17,11 @@ export default function WeddingInvitation() {
   // Target Date: December 10, 2026, 17:00:00
   const weddingDate = new Date("2026-12-10T17:00:00").getTime();
 
-  // Trigger content reveal when the video reaches its natural end
-  const handleVideoEnded = () => {
-    setDetailsVisible(true);
+  // Trigger content reveal at exactly 6 seconds, while letting the video continue to play fully
+  const handleTimeUpdate = () => {
+    if (videoRef.current && videoRef.current.currentTime >= 6 && !detailsVisible) {
+      setDetailsVisible(true);
+    }
   };
 
   return (
@@ -31,22 +33,22 @@ export default function WeddingInvitation() {
           autoPlay
           muted
           playsInline
-          onEnded={handleVideoEnded}
+          onTimeUpdate={handleTimeUpdate}
           className="w-full h-full object-cover"
         >
           <source src="/bg-video.mp4" type="video/mp4" />
         </video>
         
-        {/* Dynamic Blur Overlay adjusted to 60% intensity (backdrop-blur-xl / blur-2xl equivalent) */}
+        {/* Dynamic Blur Overlay adjusted to 25% intensity (backdrop-blur-sm equivalent) */}
         <motion.div 
-          initial={{ backdropFilter: "blur(0px)", backgroundColor: "rgba(0,0,0,0.3)" }}
-          animate={detailsVisible ? { backdropFilter: "blur(24px)", backgroundColor: "rgba(0,0,0,0.6)" } : { backdropFilter: "blur(0px)", backgroundColor: "rgba(0,0,0,0.3)" }}
+          initial={{ backdropFilter: "blur(0px)", backgroundColor: "rgba(0,0,0,0.2)" }}
+          animate={detailsVisible ? { backdropFilter: "blur(6px)", backgroundColor: "rgba(0,0,0,0.45)" } : { backdropFilter: "blur(0px)", backgroundColor: "rgba(0,0,0,0.2)" }}
           transition={{ duration: 1.5, ease: "easeInOut" }}
           className="absolute inset-0"
         />
       </div>
 
-      {/* Main Content (Reveals after video finishes playing fully) */}
+      {/* Main Content (Reveals after 6 seconds while video finishes playing) */}
       <AnimatePresence>
         {detailsVisible && (
           <motion.main 
